@@ -202,7 +202,7 @@ jobs:
           echo "❌ Found WasmEdge source line in: $file"
           echo "❌ Uninstallation failed"
           exit 1
-        fiq `
+        fi
         done
 
   # Test install_v2.sh
