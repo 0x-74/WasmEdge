@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+      - uninstaller-fix
     paths:
       - '.github/workflows/test-installers.yml'
       - 'utils/install.sh'
@@ -181,8 +182,14 @@ jobs:
         # Source helper functions
         . ./.github/scripts/installer-test-helpers.sh
 
-        # dummy .bashprofile creation to check uninstallation
-        [ -f ~/.bash_profile ] || echo > ~/.bash_profile
+        # Backup contents of existing .bash_profile (if any)
+        [ -e ~/.bash_profile ] && cp ~/.bash_profile ~/.dummy_bash_source
+
+        # Remove existing .bash_profile (file or symlink)
+        rm -f ~/.bash_profile
+
+        # Create symlink pointing to dummy source
+        ln -s ~/.dummy_bash_source ~/.bash_profile
 
         # Use latest release version from previous job
         LATEST_VERSION="${{ needs.get-latest-version.outputs.version }}"
@@ -322,11 +329,16 @@ jobs:
       run: |
         # Source helper functions
         . ./.github/scripts/installer-test-helpers.sh
-        # Dummy source file
-        touch ~/.dummy_bash_source
 
-        # create symlink safely
-        [ -L ~/.bash_profile ] || ln -s ~/.dummy_bash_source ~/.bash_profile
+        # Backup contents of existing .bash_profile (if any)
+        [ -e ~/.bash_profile ] && cp ~/.bash_profile ~/.dummy_bash_source
+
+        # Remove existing .bash_profile (file or symlink)
+        rm -f ~/.bash_profile
+
+        # Create symlink pointing to dummy source
+        ln -s ~/.dummy_bash_source ~/.bash_profile
+
 
         # Basic installation with GGML plugin (install_v2.sh defaults to ${TEST_VERSION})
         echo "=== Test: Basic installation ==="
