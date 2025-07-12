@@ -52,28 +52,28 @@ usage() {
     -p,             --path=[/usr/local]         Prefix / Path to install
 
     -V,             --verbose                   Run script in verbose mode.
-                                                    Will print out each step 
+                                                    Will print out each step
                                                     of execution.
 
     Example:
     ./$0 -p $IPATH --verbose
-    
+
     Or
     ./$0 --verbose
-    
+
     About:
 
-    - wasmedgec is the AOT compiler that compiles WebAssembly bytecode programs 
+    - wasmedgec is the AOT compiler that compiles WebAssembly bytecode programs
       (wasm programs) into native code (so program) on your deployment machine.
-    
+
     - wasmedge is the runtime that executes the wasm program or the AOT compiled
       so program.
 
-    - wasmedgec-tensorflow is the AOT compiler that compiles WebAssembly 
-      bytecode programs (wasm programs) into native code (so program) on your 
+    - wasmedgec-tensorflow is the AOT compiler that compiles WebAssembly
+      bytecode programs (wasm programs) into native code (so program) on your
       deployment machine. It is aware of WamsEdge's Tensorflow extension API.
-    
-    - wasmedge-tensorflow-lite is the runtime that executes the wasm program or 
+
+    - wasmedge-tensorflow-lite is the runtime that executes the wasm program or
       the AOT compiled so program with the Tensorflow Lite library.
 
 EOF
@@ -253,8 +253,6 @@ main() {
         realpath "$file"
       elif command -v readlink >/dev/null 2>&1; then
         readlink "$file"
-      elif command -v python3 >/dev/null 2>&1; then
-        python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$file"
       else
         echo "Could not resolve config path"
       fi
